@@ -22,9 +22,14 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
-	userClient := clients.NewUserClient("localhost:50051")
 
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{UserClient: userClient}}))
+	userClient := clients.NewUserClient("localhost:50051")
+	catalogueClient := clients.NewCatalogClient("localhost:50052")
+
+	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+		UserClient:      userClient,
+		CatalogueClient: catalogueClient,
+	}}))
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})

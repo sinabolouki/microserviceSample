@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	cataloguepb "microservice-sample/catalogue-service/gen"
 	"microservice-sample/gateway/graph/model"
 	userpb "microservice-sample/user-service/gen"
 )
@@ -30,7 +31,20 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 
 // CreateCatalogueItem is the resolver for the createCatalogueItem field.
 func (r *mutationResolver) CreateCatalogueItem(ctx context.Context, input model.CreateCatalogueItemInput) (*model.CatalogueItem, error) {
-	panic(fmt.Errorf("not implemented: CreateCatalogueItem - createCatalogueItem"))
+	resp, err := r.CatalogueClient.CreateItem(ctx, &cataloguepb.CreateItemRequest{
+		Title: input.Title,
+		Uom:   input.Uom,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to create catalogue item: %w", err)
+	}
+
+	// Map gRPC response to GraphQL model
+	return &model.CatalogueItem{
+		ID:    resp.Id,
+		Title: resp.Title,
+		Uom:   resp.Uom,
+	}, nil
 }
 
 // CreateOrder is the resolver for the createOrder field.

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package catalogue;
+
+option go_package = "./;userpb";
+
+service CatalogueService {
+  rpc CreateItem(CreateItemRequest) returns (Item);
+  rpc GetItem(GetItemRequest) returns (Item);
+  rpc ListItems(Empty) returns (ItemList);
+  rpc ValidateItems(ValidateItemsRequest) returns (ValidateItemsResponse);
+}
+
+message Empty {}
+
+message Item {
+  string id = 1;
+  string title = 2;
+  string uom = 3;
+}
+
+message CreateItemRequest {
+  string title = 1;
+  string uom = 2;
+}
+
+message GetItemRequest {
+  string id = 1;
+}
+
+message ItemList {
+  repeated Item items = 1;
+}
+
+message ValidateItemsRequest {
+  repeated string ids = 1;
+}
+
+message ValidateItemsResponse {
+  bool all_found = 1;
+  repeated string missing_ids = 2;
+}
