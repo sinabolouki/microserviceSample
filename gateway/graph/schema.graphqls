@@ -1,0 +1,70 @@
+# GraphQL Schema (schema.graphql)
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    user(id: ID!): User
+    users: [User!]!
+
+    catalogueItem(id: ID!): CatalogueItem
+    catalogueItems: [CatalogueItem!]!
+
+    orders: [Order!]!
+}
+
+type Mutation {
+    createUser(input: CreateUserInput!): User!
+    createCatalogueItem(input: CreateCatalogueItemInput!): CatalogueItem!
+    createOrder(input: CreateOrderInput!): Order!
+}
+
+# Input Types
+input CreateUserInput {
+    name: String!
+    email: String!
+}
+
+input CreateCatalogueItemInput {
+    title: String!
+    uom: String!
+}
+
+input CreateOrderInput {
+    userId: ID!
+    positions: [CreateOrderPositionInput!]!
+}
+
+input CreateOrderPositionInput {
+    catalogueItemId: ID!
+    title: String!
+    quantity: Int!
+}
+
+# Entity Types
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    orders: [Order!]!
+}
+
+type CatalogueItem {
+    id: ID!
+    title: String!
+    uom: String!
+    orders: [Order!]!
+}
+
+type Order {
+    id: ID!
+    user: User!
+    positions: [OrderPosition!]!
+}
+
+type OrderPosition {
+    id: ID!
+    catalogueItem: CatalogueItem!
+    quantity: Int64
