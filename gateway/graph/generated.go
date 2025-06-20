@@ -8,7 +8,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"gateway/graph/model"
+	"microservice-sample/gateway/graph/model"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -443,7 +443,7 @@ func (ec *executionContext) field_Mutation_createCatalogueItem_argsInput(
 ) (model.CreateCatalogueItemInput, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateCatalogueItemInput2gatewayᚋgraphᚋmodelᚐCreateCatalogueItemInput(ctx, tmp)
+		return ec.unmarshalNCreateCatalogueItemInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateCatalogueItemInput(ctx, tmp)
 	}
 
 	var zeroVal model.CreateCatalogueItemInput
@@ -466,7 +466,7 @@ func (ec *executionContext) field_Mutation_createOrder_argsInput(
 ) (model.CreateOrderInput, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateOrderInput2gatewayᚋgraphᚋmodelᚐCreateOrderInput(ctx, tmp)
+		return ec.unmarshalNCreateOrderInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderInput(ctx, tmp)
 	}
 
 	var zeroVal model.CreateOrderInput
@@ -489,7 +489,7 @@ func (ec *executionContext) field_Mutation_createUser_argsInput(
 ) (model.CreateUserInput, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateUserInput2gatewayᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
+		return ec.unmarshalNCreateUserInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
 	}
 
 	var zeroVal model.CreateUserInput
@@ -825,7 +825,7 @@ func (ec *executionContext) _CatalogueItem_orders(ctx context.Context, field gra
 	}
 	res := resTmp.([]*model.Order)
 	fc.Result = res
-	return ec.marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
+	return ec.marshalNOrder2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_CatalogueItem_orders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -877,7 +877,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -942,7 +942,7 @@ func (ec *executionContext) _Mutation_createCatalogueItem(ctx context.Context, f
 	}
 	res := resTmp.(*model.CatalogueItem)
 	fc.Result = res
-	return ec.marshalNCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
+	return ec.marshalNCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createCatalogueItem(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1007,7 +1007,7 @@ func (ec *executionContext) _Mutation_createOrder(ctx context.Context, field gra
 	}
 	res := resTmp.(*model.Order)
 	fc.Result = res
-	return ec.marshalNOrder2ᚖgatewayᚋgraphᚋmodelᚐOrder(ctx, field.Selections, res)
+	return ec.marshalNOrder2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrder(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createOrder(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1114,7 +1114,7 @@ func (ec *executionContext) _Order_user(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Order_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1168,7 +1168,7 @@ func (ec *executionContext) _Order_positions(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*model.OrderPosition)
 	fc.Result = res
-	return ec.marshalNOrderPosition2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderPositionᚄ(ctx, field.Selections, res)
+	return ec.marshalNOrderPosition2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderPositionᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Order_positions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1264,7 +1264,7 @@ func (ec *executionContext) _OrderPosition_catalogueItem(ctx context.Context, fi
 	}
 	res := resTmp.(*model.CatalogueItem)
 	fc.Result = res
-	return ec.marshalNCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
+	return ec.marshalNCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_OrderPosition_catalogueItem(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1356,7 +1356,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_user(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1421,7 +1421,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚕᚖgatewayᚋgraphᚋmodelᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_users(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1472,7 +1472,7 @@ func (ec *executionContext) _Query_catalogueItem(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.CatalogueItem)
 	fc.Result = res
-	return ec.marshalOCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
+	return ec.marshalOCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_catalogueItem(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1537,7 +1537,7 @@ func (ec *executionContext) _Query_catalogueItems(ctx context.Context, field gra
 	}
 	res := resTmp.([]*model.CatalogueItem)
 	fc.Result = res
-	return ec.marshalNCatalogueItem2ᚕᚖgatewayᚋgraphᚋmodelᚐCatalogueItemᚄ(ctx, field.Selections, res)
+	return ec.marshalNCatalogueItem2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItemᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_catalogueItems(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1591,7 +1591,7 @@ func (ec *executionContext) _Query_orders(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]*model.Order)
 	fc.Result = res
-	return ec.marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
+	return ec.marshalNOrder2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_orders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1906,7 +1906,7 @@ func (ec *executionContext) _User_orders(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*model.Order)
 	fc.Result = res
-	return ec.marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
+	return ec.marshalNOrder2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_orders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3938,7 +3938,7 @@ func (ec *executionContext) unmarshalInputCreateOrderInput(ctx context.Context, 
 			it.UserID = data
 		case "positions":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("positions"))
-			data, err := ec.unmarshalNCreateOrderPositionInput2ᚕᚖgatewayᚋgraphᚋmodelᚐCreateOrderPositionInputᚄ(ctx, v)
+			data, err := ec.unmarshalNCreateOrderPositionInput2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderPositionInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4803,11 +4803,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCatalogueItem2gatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v model.CatalogueItem) graphql.Marshaler {
+func (ec *executionContext) marshalNCatalogueItem2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v model.CatalogueItem) graphql.Marshaler {
 	return ec._CatalogueItem(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCatalogueItem2ᚕᚖgatewayᚋgraphᚋmodelᚐCatalogueItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.CatalogueItem) graphql.Marshaler {
+func (ec *executionContext) marshalNCatalogueItem2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.CatalogueItem) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4831,7 +4831,7 @@ func (ec *executionContext) marshalNCatalogueItem2ᚕᚖgatewayᚋgraphᚋmodel�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, sel, v[i])
+			ret[i] = ec.marshalNCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4851,7 +4851,7 @@ func (ec *executionContext) marshalNCatalogueItem2ᚕᚖgatewayᚋgraphᚋmodel�
 	return ret
 }
 
-func (ec *executionContext) marshalNCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v *model.CatalogueItem) graphql.Marshaler {
+func (ec *executionContext) marshalNCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v *model.CatalogueItem) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4861,24 +4861,24 @@ func (ec *executionContext) marshalNCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐC
 	return ec._CatalogueItem(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNCreateCatalogueItemInput2gatewayᚋgraphᚋmodelᚐCreateCatalogueItemInput(ctx context.Context, v any) (model.CreateCatalogueItemInput, error) {
+func (ec *executionContext) unmarshalNCreateCatalogueItemInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateCatalogueItemInput(ctx context.Context, v any) (model.CreateCatalogueItemInput, error) {
 	res, err := ec.unmarshalInputCreateCatalogueItemInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateOrderInput2gatewayᚋgraphᚋmodelᚐCreateOrderInput(ctx context.Context, v any) (model.CreateOrderInput, error) {
+func (ec *executionContext) unmarshalNCreateOrderInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderInput(ctx context.Context, v any) (model.CreateOrderInput, error) {
 	res, err := ec.unmarshalInputCreateOrderInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateOrderPositionInput2ᚕᚖgatewayᚋgraphᚋmodelᚐCreateOrderPositionInputᚄ(ctx context.Context, v any) ([]*model.CreateOrderPositionInput, error) {
+func (ec *executionContext) unmarshalNCreateOrderPositionInput2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderPositionInputᚄ(ctx context.Context, v any) ([]*model.CreateOrderPositionInput, error) {
 	var vSlice []any
 	vSlice = graphql.CoerceList(v)
 	var err error
 	res := make([]*model.CreateOrderPositionInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNCreateOrderPositionInput2ᚖgatewayᚋgraphᚋmodelᚐCreateOrderPositionInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNCreateOrderPositionInput2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderPositionInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -4886,12 +4886,12 @@ func (ec *executionContext) unmarshalNCreateOrderPositionInput2ᚕᚖgatewayᚋg
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalNCreateOrderPositionInput2ᚖgatewayᚋgraphᚋmodelᚐCreateOrderPositionInput(ctx context.Context, v any) (*model.CreateOrderPositionInput, error) {
+func (ec *executionContext) unmarshalNCreateOrderPositionInput2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateOrderPositionInput(ctx context.Context, v any) (*model.CreateOrderPositionInput, error) {
 	res, err := ec.unmarshalInputCreateOrderPositionInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateUserInput2gatewayᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v any) (model.CreateUserInput, error) {
+func (ec *executionContext) unmarshalNCreateUserInput2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v any) (model.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -4928,11 +4928,11 @@ func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) marshalNOrder2gatewayᚋgraphᚋmodelᚐOrder(ctx context.Context, sel ast.SelectionSet, v model.Order) graphql.Marshaler {
+func (ec *executionContext) marshalNOrder2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrder(ctx context.Context, sel ast.SelectionSet, v model.Order) graphql.Marshaler {
 	return ec._Order(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Order) graphql.Marshaler {
+func (ec *executionContext) marshalNOrder2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Order) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4956,7 +4956,7 @@ func (ec *executionContext) marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrder�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNOrder2ᚖgatewayᚋgraphᚋmodelᚐOrder(ctx, sel, v[i])
+			ret[i] = ec.marshalNOrder2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrder(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4976,7 +4976,7 @@ func (ec *executionContext) marshalNOrder2ᚕᚖgatewayᚋgraphᚋmodelᚐOrder�
 	return ret
 }
 
-func (ec *executionContext) marshalNOrder2ᚖgatewayᚋgraphᚋmodelᚐOrder(ctx context.Context, sel ast.SelectionSet, v *model.Order) graphql.Marshaler {
+func (ec *executionContext) marshalNOrder2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrder(ctx context.Context, sel ast.SelectionSet, v *model.Order) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4986,7 +4986,7 @@ func (ec *executionContext) marshalNOrder2ᚖgatewayᚋgraphᚋmodelᚐOrder(ctx
 	return ec._Order(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNOrderPosition2ᚕᚖgatewayᚋgraphᚋmodelᚐOrderPositionᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.OrderPosition) graphql.Marshaler {
+func (ec *executionContext) marshalNOrderPosition2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderPositionᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.OrderPosition) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -5010,7 +5010,7 @@ func (ec *executionContext) marshalNOrderPosition2ᚕᚖgatewayᚋgraphᚋmodel�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNOrderPosition2ᚖgatewayᚋgraphᚋmodelᚐOrderPosition(ctx, sel, v[i])
+			ret[i] = ec.marshalNOrderPosition2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderPosition(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -5030,7 +5030,7 @@ func (ec *executionContext) marshalNOrderPosition2ᚕᚖgatewayᚋgraphᚋmodel�
 	return ret
 }
 
-func (ec *executionContext) marshalNOrderPosition2ᚖgatewayᚋgraphᚋmodelᚐOrderPosition(ctx context.Context, sel ast.SelectionSet, v *model.OrderPosition) graphql.Marshaler {
+func (ec *executionContext) marshalNOrderPosition2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐOrderPosition(ctx context.Context, sel ast.SelectionSet, v *model.OrderPosition) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -5056,11 +5056,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNUser2gatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2microserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚕᚖgatewayᚋgraphᚋmodelᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚕᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.User) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -5084,7 +5084,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖgatewayᚋgraphᚋmodelᚐUserᚄ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -5104,7 +5104,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖgatewayᚋgraphᚋmodelᚐUserᚄ
 	return ret
 }
 
-func (ec *executionContext) marshalNUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -5397,7 +5397,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOCatalogueItem2ᚖgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v *model.CatalogueItem) graphql.Marshaler {
+func (ec *executionContext) marshalOCatalogueItem2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐCatalogueItem(ctx context.Context, sel ast.SelectionSet, v *model.CatalogueItem) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -5440,7 +5440,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalOUser2ᚖgatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖmicroserviceᚑsampleᚋgatewayᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"gateway/graph"
 	"log"
+	"microservice-sample/gateway/clients"
+	"microservice-sample/gateway/graph"
 	"net/http"
 	"os"
 
@@ -21,8 +22,9 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
+	userClient := clients.NewUserClient("localhost:50051")
 
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{UserClient: userClient}}))
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})

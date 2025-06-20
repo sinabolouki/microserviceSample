@@ -7,12 +7,25 @@ package graph
 import (
 	"context"
 	"fmt"
-	"gateway/graph/model"
+	"microservice-sample/gateway/graph/model"
+	userpb "microservice-sample/user-service/gen"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: CreateUser - createUser"))
+	res, err := r.UserClient.CreateUser(ctx, &userpb.CreateUserRequest{
+		Name:  input.Name,
+		Email: input.Email,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.User{
+		ID:    res.Id,
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
 }
 
 // CreateCatalogueItem is the resolver for the createCatalogueItem field.
@@ -27,12 +40,35 @@ func (r *mutationResolver) CreateOrder(ctx context.Context, input model.CreateOr
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+	res, err := r.UserClient.GetUser(ctx, &userpb.GetUserRequest{Id: id})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.User{
+		ID:    res.Id,
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
 }
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Users - users"))
+	res, err := r.UserClient.ListUsers(ctx, &userpb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+
+	var users []*model.User
+	for _, u := range res.Users {
+		users = append(users, &model.User{
+			ID:    u.Id,
+			Name:  u.Name,
+			Email: u.Email,
+		})
+	}
+
+	return users, nil
 }
 
 // CatalogueItem is the resolver for the catalogueItem field.
@@ -58,18 +94,3 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
-}
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
-}
-*/
