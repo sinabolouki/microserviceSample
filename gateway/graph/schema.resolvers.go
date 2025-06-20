@@ -56,7 +56,7 @@ func (r *mutationResolver) CreateOrder(ctx context.Context, input model.CreateOr
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	res, err := r.UserClient.GetUser(ctx, &userpb.GetUserRequest{Id: id})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get catalogue item: %w", err)
 	}
 
 	return &model.User{
@@ -74,11 +74,11 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	}
 
 	var users []*model.User
-	for _, u := range res.Users {
+	for _, user := range res.Users {
 		users = append(users, &model.User{
-			ID:    u.Id,
-			Name:  u.Name,
-			Email: u.Email,
+			ID:    user.Id,
+			Name:  user.Name,
+			Email: user.Email,
 		})
 	}
 
@@ -87,12 +87,35 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 
 // CatalogueItem is the resolver for the catalogueItem field.
 func (r *queryResolver) CatalogueItem(ctx context.Context, id string) (*model.CatalogueItem, error) {
-	panic(fmt.Errorf("not implemented: CatalogueItem - catalogueItem"))
+	res, err := r.CatalogueClient.GetItem(ctx, &cataloguepb.GetItemRequest{Id: id})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get catalogue item: %w", err)
+	}
+
+	return &model.CatalogueItem{
+		ID:    res.Id,
+		Title: res.Title,
+		Uom:   res.Uom,
+	}, nil
 }
 
 // CatalogueItems is the resolver for the catalogueItems field.
 func (r *queryResolver) CatalogueItems(ctx context.Context) ([]*model.CatalogueItem, error) {
-	panic(fmt.Errorf("not implemented: CatalogueItems - catalogueItems"))
+	res, err := r.CatalogueClient.ListItems(ctx, &cataloguepb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to list catalogue items: %w", err)
+	}
+
+	var items []*model.CatalogueItem
+	for _, item := range res.Items {
+		items = append(items, &model.CatalogueItem{
+			ID:    item.Id,
+			Title: item.Title,
+			Uom:   item.Uom,
+		})
+	}
+
+	return items, nil
 }
 
 // Orders is the resolver for the orders field.
