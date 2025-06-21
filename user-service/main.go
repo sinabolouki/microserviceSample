@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"microservice-sample/config"
 	"net"
+	"strings"
 	"sync"
 
 	"github.com/google/uuid"
@@ -66,7 +68,12 @@ func (s *server) ListUsers(ctx context.Context, _ *pb.Empty) (*pb.ListUsersRespo
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	_, port, found := strings.Cut(config.UserServiceAddress, ":")
+	if !found {
+		log.Fatalf("invalid address format: %s", config.CatalogueServiceAddress)
+	}
+
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -74,7 +81,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterUserServiceServer(grpcServer, NewServer())
 
-	log.Println("User service running on :50051")
+	log.Println("User service running on", port)
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

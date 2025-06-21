@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"microservice-sample/config"
 	"microservice-sample/gateway/clients"
 	"microservice-sample/gateway/graph"
 	"net/http"
@@ -23,9 +24,9 @@ func main() {
 		port = defaultPort
 	}
 
-	userClient := clients.NewUserClient("localhost:50051")
-	catalogueClient := clients.NewCatalogClient("localhost:50052")
-	orderClient := clients.NewOrderClient("localhost:50053")
+	userClient := clients.NewUserClient(config.UserServiceAddress)
+	catalogueClient := clients.NewCatalogClient(config.CatalogueServiceAddress)
+	orderClient := clients.NewOrderClient(config.OrderServiceAddress)
 
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		UserClient:      userClient,
