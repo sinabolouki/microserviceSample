@@ -25,10 +25,12 @@ func main() {
 
 	userClient := clients.NewUserClient("localhost:50051")
 	catalogueClient := clients.NewCatalogClient("localhost:50052")
+	orderClient := clients.NewOrderClient("localhost:50053")
 
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		UserClient:      userClient,
 		CatalogueClient: catalogueClient,
+		OrderClient:     orderClient,
 	}}))
 
 	srv.AddTransport(transport.Options{})

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	cataloguepb "microservice-sample/catalogue-service/gen"
 	"microservice-sample/gateway/graph/model"
+	orderpb "microservice-sample/order-service/gen"
 	userpb "microservice-sample/user-service/gen"
 )
 
@@ -49,20 +50,69 @@ func (r *mutationResolver) CreateCatalogueItem(ctx context.Context, input model.
 
 // CreateOrder is the resolver for the createOrder field.
 func (r *mutationResolver) CreateOrder(ctx context.Context, input model.CreateOrderInput) (*model.Order, error) {
-	panic(fmt.Errorf("not implemented: CreateOrder - createOrder"))
+	var positions []*orderpb.OrderPositionInput
+	for _, p := range input.Positions {
+		pos := &orderpb.OrderPositionInput{
+			CatalogueItemId: p.CatalogueItemID,
+			Title:           p.Title,
+			Quantity:        p.Quantity,
+		}
+		positions = append(positions, pos)
+	}
+
+	req := &orderpb.CreateOrderRequest{
+		UserId:    input.UserID,
+		Positions: positions,
+	}
+
+	res, err := r.OrderClient.CreateOrder(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create order: %w", err)
+	}
+
+	return &model.Order{
+		ID:        res.Id,
+		User:      &model.User{ID: res.UserId},
+		Positions: mapOrderPositions(res.Positions),
+	}, nil
 }
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+	// Step 1: Get the user info from User Service
 	res, err := r.UserClient.GetUser(ctx, &userpb.GetUserRequest{Id: id})
 	if err != nil {
-		return nil, fmt.Errorf("failed to get catalogue item: %w", err)
+		return nil, fmt.Errorf("failed to get user: %w", err)
 	}
 
+	// Step 2: Get all orders from Order Service
+	orderResp, err := r.OrderClient.ListOrders(ctx, &orderpb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to list orders: %w", err)
+	}
+
+	// Step 3: Filter and map orders belonging to this user
+	var userOrders []*model.Order
+	for _, ord := range orderResp.Orders {
+		if ord.UserId == id {
+			userOrders = append(userOrders, &model.Order{
+				ID: ord.Id,
+				User: &model.User{
+					ID:    res.Id,
+					Name:  res.Name,
+					Email: res.Email,
+				},
+				Positions: mapOrderPositions(ord.Positions),
+			})
+		}
+	}
+
+	// Step 4: Return user with orders
 	return &model.User{
-		ID:    res.Id,
-		Name:  res.Name,
-		Email: res.Email,
+		ID:     res.Id,
+		Name:   res.Name,
+		Email:  res.Email,
+		Orders: userOrders,
 	}, nil
 }
 
@@ -73,12 +123,31 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 		return nil, err
 	}
 
+	// Get all orders
+	orderRes, err := r.OrderClient.ListOrders(ctx, &orderpb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get orders: %w", err)
+	}
+
+	// Group orders by user ID
+	orderMap := make(map[string][]*model.Order)
+	for _, ord := range orderRes.Orders {
+		orderMap[ord.UserId] = append(orderMap[ord.UserId], &model.Order{
+			ID: ord.Id,
+			User: &model.User{
+				ID: ord.UserId,
+			},
+			Positions: mapOrderPositions(ord.Positions),
+		})
+	}
+
 	var users []*model.User
 	for _, user := range res.Users {
 		users = append(users, &model.User{
-			ID:    user.Id,
-			Name:  user.Name,
-			Email: user.Email,
+			ID:     user.Id,
+			Name:   user.Name,
+			Email:  user.Email,
+			Orders: orderMap[user.Id],
 		})
 	}
 
@@ -92,10 +161,42 @@ func (r *queryResolver) CatalogueItem(ctx context.Context, id string) (*model.Ca
 		return nil, fmt.Errorf("failed to get catalogue item: %w", err)
 	}
 
+	// Get all orders
+	orderRes, err := r.OrderClient.ListOrders(ctx, &orderpb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get orders: %w", err)
+	}
+
+	// Filter orders that contain this catalogue item
+	var relatedOrders []*model.Order
+	for _, ord := range orderRes.Orders {
+		var matchedPositions []*model.OrderPosition
+		for _, pos := range ord.Positions {
+			if pos.CatalogueItemId == id {
+				matchedPositions = append(matchedPositions, &model.OrderPosition{
+					ID: pos.Id,
+					CatalogueItem: &model.CatalogueItem{
+						ID:    pos.CatalogueItemId,
+						Title: pos.Title,
+					},
+					Quantity: &pos.Quantity,
+				})
+			}
+		}
+		if len(matchedPositions) > 0 {
+			relatedOrders = append(relatedOrders, &model.Order{
+				ID:        ord.Id,
+				User:      &model.User{ID: ord.UserId},
+				Positions: matchedPositions,
+			})
+		}
+	}
+
 	return &model.CatalogueItem{
-		ID:    res.Id,
-		Title: res.Title,
-		Uom:   res.Uom,
+		ID:     res.Id,
+		Title:  res.Title,
+		Uom:    res.Uom,
+		Orders: relatedOrders,
 	}, nil
 }
 
@@ -106,12 +207,42 @@ func (r *queryResolver) CatalogueItems(ctx context.Context) ([]*model.CatalogueI
 		return nil, fmt.Errorf("failed to list catalogue items: %w", err)
 	}
 
+	// Get all orders
+	orderRes, err := r.OrderClient.ListOrders(ctx, &orderpb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get orders: %w", err)
+	}
+
+	// Group orders by catalogue item ID
+	itemOrderMap := make(map[string][]*model.Order)
+	for _, ord := range orderRes.Orders {
+		for _, pos := range ord.Positions {
+			itemID := pos.CatalogueItemId
+			order := &model.Order{
+				ID:   ord.Id,
+				User: &model.User{ID: ord.UserId},
+				Positions: []*model.OrderPosition{
+					{
+						ID: pos.Id,
+						CatalogueItem: &model.CatalogueItem{
+							ID:    itemID,
+							Title: pos.Title,
+						},
+						Quantity: &pos.Quantity,
+					},
+				},
+			}
+			itemOrderMap[itemID] = append(itemOrderMap[itemID], order)
+		}
+	}
+
 	var items []*model.CatalogueItem
 	for _, item := range res.Items {
 		items = append(items, &model.CatalogueItem{
-			ID:    item.Id,
-			Title: item.Title,
-			Uom:   item.Uom,
+			ID:     item.Id,
+			Title:  item.Title,
+			Uom:    item.Uom,
+			Orders: itemOrderMap[item.Id],
 		})
 	}
 
@@ -120,7 +251,21 @@ func (r *queryResolver) CatalogueItems(ctx context.Context) ([]*model.CatalogueI
 
 // Orders is the resolver for the orders field.
 func (r *queryResolver) Orders(ctx context.Context) ([]*model.Order, error) {
-	panic(fmt.Errorf("not implemented: Orders - orders"))
+	res, err := r.OrderClient.ListOrders(ctx, &orderpb.Empty{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to list orders: %w", err)
+	}
+
+	var orders []*model.Order
+	for _, ord := range res.Orders {
+		orders = append(orders, &model.Order{
+			ID:        ord.Id,
+			User:      &model.User{ID: ord.UserId},
+			Positions: mapOrderPositions(ord.Positions),
+		})
+	}
+
+	return orders, nil
 }
 
 // Mutation returns MutationResolver implementation.
@@ -131,3 +276,18 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+func mapOrderPositions(positions []*orderpb.OrderPosition) []*model.OrderPosition {
+	var result []*model.OrderPosition
+	for _, pos := range positions {
+		result = append(result, &model.OrderPosition{
+			ID: pos.Id,
+			CatalogueItem: &model.CatalogueItem{
+				ID:    pos.CatalogueItemId,
+				Title: pos.Title, // optional, can omit or enhance via CatalogueClient
+			},
+			Quantity: &pos.Quantity,
+		})
+	}
+	return result
+}

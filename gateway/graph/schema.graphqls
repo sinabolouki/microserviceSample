@@ -67,5 +67,5 @@ type Order {
 type OrderPosition {
   id: ID!
   catalogueItem: CatalogueItem!
-  quantity: Int
+  quantity: Int!
 }

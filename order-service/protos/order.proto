@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "./;orderpb";
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (Order);
+  rpc ListOrders(Empty) returns (OrderList);
+}
+
+message Empty {}
+
+message Order {
+  string id = 1;
+  string user_id = 2;
+  repeated OrderPosition positions = 3;
+}
+
+message OrderPosition {
+  string id = 1;
+  string catalogue_item_id = 2;
+  string title = 3;
+  int32 quantity = 4;
+}
+
+message CreateOrderRequest {
+  string user_id = 1;
+  repeated OrderPositionInput positions = 2;
+}
+
+message OrderPositionInput {
+  string catalogue_item_id = 1;
+  string title = 2;
+  int32 quantity = 3;
+}
+
+message OrderList {
+  repeated Order orders = 1;
+}
