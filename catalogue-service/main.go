@@ -2,30 +2,35 @@ package main
 
 import (
 	"log"
-	"microservice-sample/config"
+	"microservice-sample/utils"
 	"net"
 	"strings"
 
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
-	cataloguepb "microservice-sample/catalogue-service/gen"
+
+	pb "microservice-sample/catalogue-service/gen"
 )
 
 func main() {
-	_, port, found := strings.Cut(config.CatalogueServiceAddress, ":")
+	_, port, found := strings.Cut(utils.CatalogueServiceAddress, ":")
 	if !found {
-		log.Fatalf("invalid address format: %s", config.CatalogueServiceAddress)
+		log.Fatalf("invalid address format: %s", utils.CatalogueServiceAddress)
 	}
+
+	db := utils.InitDB()
+	defer db.Close()
 
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
+		log.Fatalf("failed to listen: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
-	cataloguepb.RegisterCatalogueServiceServer(grpcServer, NewCatalogueServer())
+	pb.RegisterCatalogueServiceServer(grpcServer, NewCatalogueServer(db))
 
 	log.Println("✅ CatalogueService running on port", port)
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve: %v", err)
+		log.Fatalf("failed to serve: %v", err)
 	}
 }

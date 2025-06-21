@@ -1,13 +1,14 @@
 package main
 
 import (
-	"google.golang.org/grpc/credentials/insecure"
 	"log"
-	"microservice-sample/config"
+	"microservice-sample/utils"
 	"net"
 	"strings"
 
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	cataloguepb "microservice-sample/catalogue-service/gen"
 	orderpb "microservice-sample/order-service/gen"
@@ -15,21 +16,27 @@ import (
 )
 
 func main() {
-	// Connect to User and Catalogue Services
-	userConn, _ := grpc.NewClient(config.UserServiceAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	catConn, _ := grpc.NewClient(config.CatalogueServiceAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	// gRPC clients
+	userConn, _ := grpc.NewClient(utils.UserServiceAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	catConn, _ := grpc.NewClient(utils.CatalogueServiceAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	userClient := userpb.NewUserServiceClient(userConn)
 	catClient := cataloguepb.NewCatalogueServiceClient(catConn)
 
-	_, port, found := strings.Cut(config.OrderServiceAddress, ":")
-	if !found {
-		log.Fatalf("invalid address format: %s", config.CatalogueServiceAddress)
-	}
+	// DB
+	db := utils.InitDB()
+	defer db.Close()
 
+	// Port
+	_, port, found := strings.Cut(utils.OrderServiceAddress, ":")
+	if !found {
+		log.Fatalf("invalid address format: %s", utils.OrderServiceAddress)
+	}
 	lis, _ := net.Listen("tcp", ":"+port)
+
+	// Server
 	grpcServer := grpc.NewServer()
-	orderpb.RegisterOrderServiceServer(grpcServer, NewOrderServer(catClient, userClient))
+	orderpb.RegisterOrderServiceServer(grpcServer, NewOrderServer(catClient, userClient, db))
 
 	log.Println("✅ OrderService running on port", port)
 	if err := grpcServer.Serve(lis); err != nil {

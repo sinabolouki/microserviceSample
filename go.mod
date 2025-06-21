@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	github.com/99designs/gqlgen v0.17.75
 	github.com/google/uuid v1.6.0
+	github.com/lib/pq v1.10.9
 	github.com/vektah/gqlparser/v2 v2.5.28
 	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.6
