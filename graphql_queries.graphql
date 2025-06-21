@@ -1,0 +1,145 @@
+#####################################
+# 🧍 Create User
+#####################################
+mutation {
+  createUser(input: {
+    name: "Alice",
+    email: "alice@example.com"
+  }) {
+    id
+    name
+    email
+  }
+}
+
+#####################################
+# 📦 Create Catalogue Items
+#####################################
+mutation {
+  createCatalogueItem(input: {
+    title: "Bananas"
+    uom: "kg"
+  }) {
+    id
+    title
+    uom
+  }
+}
+
+mutation {
+  createCatalogueItem(input: {
+    title: "Apples"
+    uom: "kg"
+  }) {
+    id
+    title
+    uom
+  }
+}
+
+#####################################
+# 📋 List Users
+#####################################
+query {
+  users {
+    id
+    name
+    email
+    orders {
+      id
+      positions {
+        title
+        quantity
+      }
+    }
+  }
+}
+
+#####################################
+# 🔍 Get User by ID
+#####################################
+query {
+  user(id: "REPLACE_WITH_USER_ID") {
+    id
+    name
+    email
+    orders {
+      id
+      positions {
+        title
+        quantity
+        catalogueItem {
+          title
+          uom
+        }
+      }
+    }
+  }
+}
+
+#####################################
+# 📋 List Catalogue Items
+#####################################
+query {
+  catalogueItems {
+    id
+    title
+    uom
+    orders {
+      id
+    }
+  }
+}
+
+#####################################
+# 📑 Create Order
+#####################################
+mutation {
+  createOrder(input: {
+    userId: "REPLACE_WITH_USER_ID"
+    positions: [
+      {
+        catalogueItemId: "REPLACE_WITH_ITEM_ID_1"
+        title: "Bananas"
+        quantity: 5
+      },
+      {
+        catalogueItemId: "REPLACE_WITH_ITEM_ID_2"
+        title: "Apples"
+        quantity: 2
+      }
+    ]
+  }) {
+    id
+    user {
+      name
+    }
+    positions {
+      title
+      quantity
+    }
+  }
+}
+
+#####################################
+# 📋 List All Orders
+#####################################
+query {
+  orders {
+    id
+    user {
+      id
+      name
+    }
+    positions {
+      id
+      title
+      quantity
+      catalogueItem {
+        id
+        title
+        uom
+      }
+    }
+  }
+}
